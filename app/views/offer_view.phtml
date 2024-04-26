@@ -1,0 +1,112 @@
+<?php
+
+	$err='';
+
+	if (!empty($data->msg))
+	{
+		$err.='<div class="section__errors">
+				<p class="section__errors_green">'.$data->msg.'</p>
+			   </div>';
+	}
+	if (!empty($err))
+	{
+		echo $err;
+	}
+	else
+	{
+?>
+
+<section class="section">
+
+	<h2 class="h2 py-2 text-center">Страница создания и редактирования оффера</h2>
+
+	<div class="container">
+		<div class="row justify-content-center">
+			<div class="col-md-4">
+
+			<form class="form" action="<?=$_SERVER['REQUEST_URI']; ?>" method="POST">
+			<!-- csrf -->
+			<input type="hidden" name="tkn" id="tkn" value="<?=$_SESSION['tkn'] ?? null;?>">
+
+			<legend>Заполните информацию об оффере</legend>
+
+			<div class="form-floating">
+			<label for="offername">Имя</label>
+			<input type="text" class="form-control" name="offername" id="offername" value="<?=(!empty($data->offername) ? $data->offername : ''); ?>">
+			</div>
+
+			<div class="form-floating mt-2">
+			<label for="offerprice">Цена</label>
+			<input type="number" class="form-control" step="0.01" min="0" placeholder="0,00" name="offerprice" id="offerprice" value="<?php echo $data->offerprice; ?>">
+			</div>
+
+			<div class="form-floating mt-2">
+			<label for="offertheme">Тема</label>
+			<input type="text" class="form-control" name="offertheme" id="offertheme" value="<?=(!empty($data->offertheme) ? $data->offertheme : ''); ?>">
+			</div>
+
+			<div class="form-floating mt-2">
+			<label for="offerurl">url</label>
+			<input type="url" class="form-control" name="offerurl" id="offerurl" value="<?=(!empty($data->offerurl) ? $data->offerurl : ''); ?>" >
+			</div>
+
+			<?php if ($_SESSION['role'] == 'admin'): ?>
+			<div class="form-floating mt-2">
+				<label for="userid">id пользователя</label>
+				<input type="text" id="userid" class="form-control" name="userid" value="<?=((empty($data->userid)) ? $_SESSION['userid'] : $data->userid); ?>" >
+			</div>
+			<?php endif; ?>
+
+			<div class="form-check mt-1">
+				<label for="offeractive" class="form-check-label">Активный</label>
+				<input type="checkbox" class="form-check-input" id="offeractive" name="offeractive" value="1" <?=(!empty($data->offeractive) ? 'checked' : ''); ?> >
+			</div>
+
+			<div class="col-sm form-floating mt-1">    
+            	<input type="submit" name="btn" class="btn btn-success" value="Сохранить">
+            	<a href="/admin/" class="btn btn-success">Назад</a>
+        	</div>
+
+			</form>
+			</div>
+		</div>
+	</div>
+
+	
+	<div><?=$err;?></div>
+
+<?php
+
+if (!empty($data->offername)):?>
+
+	<form class="form" action="<?=$_SERVER['REQUEST_URI']?>" method="POST">
+
+		<legend>Статистика по офферу</legend>
+
+		<div class="form-floating">
+			<button class="btn btn-secondary" name="date" value="1">День</button>
+			<button class="btn btn-secondary" name="date" value="2">Месяц</button>
+			<button class="btn btn-secondary" name="date" value="3">Год</button>
+			<button class="btn btn-secondary" name="date" value="0">Все время</button>
+		</div>
+	</form>
+
+	<div class="container">
+		<p class="">
+			Израсходовано денег на оффер за период: <?=(!empty($data->offer_balance)) ? $data->offer_balance : '0'; ?> руб.
+		</p>
+		<p class="">
+			Количество кликов по офферу: <?=(!empty($data->offer_click)) ? $data->offer_click : '0'; ?>
+		</p>
+		<p class="">
+			Количество мастеров, использующих оффер: <?=(!empty($data->offer_master_count)) ? $data->offer_master_count : '0'; ?>
+		</p>
+	</div>
+
+	<form  class="form" action="/offer/delete" method="POST">
+		<button class="btn btn-danger" name="del" value="<?=$data->offerid; ?>">Удалить оффер</button>
+	</form>
+
+<?php endif; ?>
+</section>
+<?php } ?>

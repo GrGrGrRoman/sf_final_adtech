@@ -1,0 +1,90 @@
+<?php
+    use App\models\Model_Postclear;
+?>
+<section class="section">    
+    <h2 class="h2 py-2 text-center">Панель администрирования</h2>        
+        
+        <p class="">Вошли как: <?=$data->nameRole?></p>
+        <p class="">Ваш баланс: <?=$data->balance?> руб</p>    
+
+    <?php if ($_SESSION['role'] !== 'master'): ?>
+    <div class="d-grid gap-2 d-md-block mt-2">
+        <a href="/offer/" class="btn btn-primary">Создать оффер</a>
+    </div>
+    <?php endif; ?>
+
+    <form class="row mt-2" action="<?=$_SERVER['REQUEST_URI']?>" method="POST">
+        <div class="col-sm form-floating">
+            <input type="text" name="offername" class="form-control" value="<?php ((!empty($_POST['offername'])) ? (new Model_Postclear($_POST['offername']))->clear() : '')?>" placeholder="Название оффера">
+        </div>
+        <div class="col-sm form-floating">
+            <input type="text" name="offertheme" class="form-control" value="<?php ((!empty($_POST['offertheme'])) ? (new Model_Postclear($_POST['offertheme']))->clear() : '')?>" placeholder="Тема оффера">
+        </div>
+        <div class="col-sm form-floating">    
+            <input type="submit" name="search" class="btn btn-success" value="Найти">
+        </div>
+
+        <div class="d-grid gap-2 d-md-block mt-2">
+        <?php
+				if(($data->prevpage !== '') and (($data->nextpage) !==1 ))
+				{
+					echo '<button name="page" class="btn btn-secondary mr-2" value="'.$data->prevpage.'">Предыдущая</button>';
+				}
+
+				if (!empty($data->nextpage))
+				{
+					echo '<button name="page" class="btn btn-secondary mr-2" value="'.$data->nextpage.'">Следующая</button>';
+				}
+		?>
+        </div>
+    </form>
+
+    <div class="section__table">
+        <div class="table__row">
+            <div class="table__btn">Действия</div>
+            <div class="table__id">ID</div>
+            <div class="table__name">Название</div>
+            <div class="table__theme">Тема</div>
+            <div class="table__price">Цена</div>
+            <div class="table__url">URL</div>
+            <?php if($_SESSION['role'] == 'admin'): ?>
+                <div class="table__userid">ID автора</div>
+            <?php endif; ?>
+            <div class="table__date">Дата</div>
+            <div class="table__active">Статус</div>
+    </div>
+
+        <?php
+        if (!empty($data->table))
+        {
+            foreach($data->table as $item)
+            {
+
+            echo '<div class="table__row">';
+
+            foreach ($item as $key=>$value)
+            { 
+                if($key=='id'){echo '<div class="table__btn">';if($item->userid==$_SESSION['userid']||$_SESSION['role']!=='advert'){echo '<a class="btn btn-warning btn-sm" href="/'.$data->parturl.'/'.$value.'">'.$data->parturlname.'</a>';}echo '</div>';}
+                if($key=='active'){echo '<div class="table__active">'.(($value==1)?'<span style="color:green;">Актив</span>':'<span style="color:red;">Не акт</span>').'</div>'; continue;}
+                if($key=='date'){echo '<div class="table__date">'.date('d.m.Y', $value).'</div>'; continue;}
+                if($key=='userid'){if($_SESSION['role']=='admin'){echo '<div class="table__userid">'.$value.'</div>';} continue;}
+                echo '<div class="table__'.$key.'">'.$value.'</div>';
+            }
+
+            echo '</div>';
+            }
+        }
+        else
+        {
+        echo '<div class="table__row text-center text-danger"><strong>Список офферов пуст</strong></div>';
+        } 
+        echo '</div>';
+
+        if ($_SESSION['role'] !== 'admin')
+        {
+            echo '<form action="/admin/'.$data->formaction.'" class="form" method="POST">
+                    <button name="userid" class="btn btn-secondary" value="1">'.(($data->formaction == 'search') ? 'Показать все офферы' : 'Показать мои офферы').'</button>
+                  </form>';
+        }
+        ?>
+</section>

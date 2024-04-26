@@ -1,0 +1,119 @@
+<section class="section">
+	<h2 class="h2 py-2 text-center">Статистика и бюджет системы</h2>
+	
+	<div class="container">
+		<p class="">
+			Общая сумма: <?=$data->balance; ?> руб.
+		</p>
+		<p class="">
+			Комиссия за переходы: <?=$data->balance_platform; ?> руб.
+		</p>
+		<p class="">
+			Количество кликов: <?=$data->count; ?>
+		</p>
+	</div>
+
+	<div class="container mt-3">
+		<h3 class="h3 py-2">Возможные статусы офферов:</h3>
+		<p class="">5 - На оффер подписаны, ссылка ОК, деньги перечисляются </p>
+		<p class="">4 - Мастер заблокирован</p>
+		<p class="">3 - Рекламодатель заблокирован</p>
+		<p class="">2 - Оффер без подписок</p>
+		<p class="">1 - Оффер отключен рекламодателем</p>
+	</div>
+
+	<div class="section__table">
+<?php if (!empty($data->all)){ ?>
+		<div class="table__row">
+			<div class="table__id">ID</div>
+			<div class="table__masteruserid">ID Мастера</div>
+			<div class="table__date">Дата</div>
+			<div class="table__status">Статус</div>
+			<div class="table__url">Реферальный хэш url</div>
+			<div class="table__offerid">ID оффера</div>
+			<div class="table__price">Цена перехода</div>
+		</div>
+
+<?php foreach($data->all as $key=>$val){ ?>
+		<div class="table__row">
+	<?php foreach($val as $k=>$v){
+			if($k == 'date'){ echo '<div class="table__date">'.date('d.m.Y H:i:s', $v).'</div>'; continue;}
+			echo '<div class="table__'.$k.'">'.$v.'</div>';
+		} ?>
+		</div>
+	<?php } 
+}
+else
+{ ?>
+		<div class="table__row text-danger"><strong>Записи не найдены</strong></div>
+<?php } ?>
+		</div>
+		
+		
+<div class="container">
+	<div class="row">
+		<div class="col-md-6">		
+
+		<form class="form" action="<?=$_SERVER['REQUEST_URI']; ?>" method="POST">
+
+			<?php
+			if(($data->prevpage !== '') and (($data->nextpage) !==1 ))
+			{
+				echo '<button name="page" class="btn btn-secondary mr-2" value="'.$data->prevpage.'">Предыдущая</button>';
+			}
+
+			if (!empty($data->nextpage))
+			{
+				echo '<button name="page" class="btn btn-secondary mr-2" value="'.$data->nextpage.'">Следующая</button>';
+			}
+			?>
+
+		<legend class="test-center pt-3">Фильтр</legend>
+
+		<div class="form-floating mt-1">
+			<label for="status">Статус</label>
+			<select class="form-control" name="status" id="status">
+			<option value="<?=(!empty($_POST['status']) ? $_POST['status'] : ''); ?>"><?=(!empty($_POST['status']) ? $_POST['status'] : ''); ?></option>
+			<option value="0">Показать всё</option>
+			<option value="5">5 - все ОК</option>
+			<option value="4">4 - Мастер заблокирован</option>
+			<option value="3">3 - Рекламодатель заблокирован</option>
+			<option value="2">2 - Офферы без подписок</option>
+			<option value="1">1 - Оффер отключен рекламодателем</option>
+			</select>
+		</div>
+
+		<div class="form-floating mt-1">
+			<label for="date">Отображать за последние (дней)</label>
+			<input type="number" class="form-control" name="date" min="0" id="date" value="<?=(!empty($_POST['date']) ? $_POST['date'] : ''); ?>"> 
+		</div>
+
+		<div class="form-floating mt-1">
+			<label for="url">Реферальный хэш url</label>
+			<input type="text" class="form-control" name="url" id="url" value="<?=(!empty($_POST['url']) ? $_POST['url'] : ''); ?>">
+		</div>
+
+		<div class="form-floating mt-1">
+			<label for="masteruserid">ID мастера</label>
+			<input type="number" class="form-control" min="0" name="masteruserid" id="masteruserid" value="<?=(!empty($_POST['masteruserid']) ? $_POST['masteruserid'] : ''); ?>">
+		</div>
+
+		<div class="form-floating mt-1">
+			<label for="offerid">ID Оффера</label>
+			<input type="number" class="form-control" min="0" name="offerid" id="offerid" value="<?=(!empty($_POST['offerid']) ? $_POST['offerid'] : ''); ?>">
+		</div>
+
+		<div class="form-floating mt-1">
+			<label for="price">Цена перехода дороже</label>
+			<input type="text" class="form-control" name="price" id="price" step="0.01" min="0" placeholder="0,00" value="<?=(!empty($_POST['price']) ? $_POST['price'] : ''); ?>">
+		</div>		
+
+		<div class="form-floating-center mt-2">
+			<input type="submit" class="btn btn-success" value="Найти" name="btn">
+		</div>		
+
+		</form>
+		</div>
+	</div>
+</div>	
+</section>

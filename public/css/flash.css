@@ -1,0 +1,29 @@
+
+.section__errors_green{
+	color: #165816;
+    background: rgb(171, 233, 187);
+    border-radius: 2px;
+}
+.section__errors_red{
+	color: #850808;
+    background: rgb(241, 178, 178);
+    border-radius: 2px;
+}
+.section__errors_white{
+	color: #ffffff;
+    border-radius: 2px;
+}
+.section__errors {
+    margin: 10px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgb(46, 45, 45);
+    width: 100%;
+    box-sizing: border-box;
+    border-radius: 3px;
+    padding: 8px;
+    font-size: 20px;
+	animation-name: ani;
+	animation-duration: 1s;
+}

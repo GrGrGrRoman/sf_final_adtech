@@ -1,0 +1,73 @@
+
+table, th, td {
+    border: 1px solid #e3e3e3;
+    padding: 5px;
+}
+.table-form__button:hover {
+    background: #efefef;
+    transition: 1s;
+    color:black;
+}
+.table-form__button{
+    padding: 3px;
+    background: #16683f;
+    border: #d9d9d9 solid 1px;
+    color: #fff;
+    transition: 1s;
+}
+.table__row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.table__row div{
+	padding:3px;
+}
+.table__th{
+	width: 25%;
+}
+.table__td{
+	width: 75%;
+	word-wrap: break-word;
+}
+.table__btn, .table__date, .table__datetime {
+    width: 80px;
+	text-align: center;
+}
+.table__btn{
+	order: 10;
+}
+.table__id, .table__offerid, .table__status, .table__active, .table__is_admin {
+    width: 60px;
+	text-align:center;
+	word-wrap: break-word;
+}
+.table__name, .table__theme, .table__login, .table__ip{
+    width: 150px;
+	word-wrap: break-word;
+}
+.table__price,  .table__balance  {
+	width:70px;
+	word-wrap: break-word;
+}
+.table__url {
+    width: 200px;
+	word-wrap: break-word;
+}
+.table__userid,.table__masteruserid {
+    width: 60px;
+	text-align: center;
+}
+.section__table {
+    padding: 10px;
+    border: solid 1px #d9d9d9;
+    border-radius: 10px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+	animation-name: ani;
+	animation-duration: 0.5s;
+}
+.table__row:nth-child(2n){
+	background: #efefef;
+}
+

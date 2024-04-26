@@ -1,0 +1,76 @@
+<section class="section">
+
+    <h2 class="h2 py-2 text-center ">Карточка оффера</h2>
+    <?php if (isset($data->offername)) : ?>
+    <div class="section__table">
+        <div class="table__row">
+            <div class="table__th">Название оффера</div>
+            <div class="table__td"><?=(isset($data->offername)) ? $data->offername : ''; ?></div>
+        </div>
+        <div class="table__row">
+            <div class="table__th">Тема оффера</div>
+            <div class="table__td"><?=(isset($data->offertheme)) ? $data->offertheme : ''; ?></div>
+        </div>
+        <div class="table__row">
+            <div class="table__th">ID оффера</div>
+            <div class="table__td"><?=$data->offerid; ?></div>
+        </div>
+        <div class="table__row">
+            <div class="table__th">url оффера</div>
+            <div class="table__td"><?=$data->offerurl; ?></div>
+        </div>
+        <div class="table__row">
+            <div class="table__th">Стоимость перехода</div>
+            <div class="table__td"><?=$data->offerprice; ?> руб. (Комиссия за вывод средств: 20%)</div>
+        </div>
+        <div class="table__row">
+            <div class="table__th">Имя рекламодателя</div>
+            <div class="table__td"><?=$data->offeradvertname; ?> (ID:<?=$data->offeruserid; ?>)</div>
+        </div>
+        <div class="table__row">
+            <div class="table__th">Реферальный url</div>
+            <div class="table__td"><?=$data->masterurl; ?></div>
+        </div>
+    </div>
+    <?php endif; ?>
+
+<?php if (!empty($data->stat)): ?>
+    <div class="section__errors">        
+    <?php if($data->stat=="access_granted"):?>
+        <p class="section__errors_green"><?=$data->msg; ?></p>
+        <?php else: ?>
+        <p class="section__errors_red"><?=$data->msg; ?></p>
+        <?php endif; ?>
+    </div>
+<?php endif; ?>
+
+<?php if(isset($data->offer_balance)): ?>
+
+	<form class="form" action="<?=$_SERVER['REQUEST_URI']; ?>" method="POST">
+		<legend>Статистика по офферу</legend>
+		
+        <div class="form-floating">
+			<button class="btn btn-success" name="date" value="1">День</button>
+			<button class="btn btn-success" name="date" value="2">Месяц</button>
+			<button class="btn btn-success" name="date" value="3">Год</button>
+			<button class="btn btn-success" name="date" value="0">Все время</button>
+		
+        </div>
+	</form>
+
+    <div class="container">
+		<p class="">
+			Получено денег за оффер: <?=$data->offer_balance; ?> руб (С учетом комиссии: 20%).
+		</p>
+		<p class="">
+			Количество кликов по офферу: <?=$data->offer_click; ?>
+		</p>
+	</div>
+
+    <form  class="form" action="/offermaster/delete" method="POST">
+		<button class="btn btn-danger" name="del" value="<?=$data->offerid; ?>">Отписаться от оффера</button>
+		<a href="/admin/" class="btn btn-primary">Назад</a>
+	</form>
+
+<?php endif; ?>
+</section>

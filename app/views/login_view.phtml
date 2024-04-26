@@ -1,0 +1,56 @@
+<?php
+$err='';
+if(!empty($data->login_status))
+{
+$err.='<div class="section__errors">';
+if($data->login_status=="access_granted")
+{
+	$err.='<p class="section__errors_green">'.$data->sms.'</p>';
+	 }
+	 else
+	 {
+		$err.='<p class="section__errors_red">'.$data->sms.'</p>';
+	 }
+$err.='</div>';
+}
+if(!empty($err))
+{
+	echo $err; 	
+}
+else
+{
+?>
+<h2 class="h2 text-center my-2">Вход</h2>
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-3">
+            <form action="<?=$_SERVER['REQUEST_URI']?>" method="POST">
+                <!-- csrf -->
+				<input type="hidden" name="tkn" id="tkn" value="<?=$_SESSION['tkn'] ?? null;?>">
+
+                <div class="form-floating mb-3">
+                    <label for="login">Логин</label>
+                    <input type="text" class="form-control" id="login" name="login" value="<?=$_SESSION['auth']['login'] ?? null ?>">
+                </div>
+
+                <div class="form-floating">
+                    <label for="password">Пароль</label>
+                    <input type="password" class="form-control" id="password" name="password">
+                </div>
+
+				<div class="mt-3">
+				<label for="role">Выберите роль</label>
+				<select class="form-select" name="role" id="role" aria-label="">
+				<option selected value="advert">Рекламодатель</option>
+				<option value="master">Мастер</option>
+  				</select>
+				</div>
+
+                <button type="submit" class="btn btn-success mt-3" name="btn" value="Войти">Войти</button>
+            </form>
+			<div class="section__result"><?=$err; ?></div>
+        </div>
+    </div>
+</div>
+<?php } ?>
