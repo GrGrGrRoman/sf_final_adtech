@@ -2,6 +2,8 @@
 
 namespace App\core;
 
+use function App\core\config\d;
+
 class Route
 {
 	public static function start()
@@ -26,10 +28,10 @@ class Route
 			$action_param = $routes[3];
 		}
 		
-		$model_name = 'model_' . $controller_name;
+		$model_name = 'Model_' . ucfirst(strtolower($controller_name));
 		$controller_name = CONTROLLERS_NAMESPACE . 'Controller_' . $controller_name;
 		$action_name = 'action_' . $action_name;
-		$model_file = strtolower($model_name) . '.php';
+		$model_file = ucfirst($model_name) . '.php';
 		$model_path = MODEL . DIRECTORY_SEPARATOR . $model_file;
 		
 		if (file_exists($model_path))
@@ -37,7 +39,14 @@ class Route
 			include MODEL . DIRECTORY_SEPARATOR . $model_file;
 		}
 
-		$controller_file = ucfirst($controller_name) . '.php';
+		if (!empty($routes[1]))
+		{			
+			$controller_file = CONTROLLER . DIRECTORY_SEPARATOR . 'Controller_' . ucfirst(strtolower($routes[1])) . '.php';
+		}
+		else
+		{
+			$controller_file = CONTROLLER . DIRECTORY_SEPARATOR . 'Controller_Main.php';
+		}
 		
 		if (file_exists($controller_file))
 		{
